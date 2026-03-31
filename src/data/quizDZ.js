@@ -1,5 +1,5 @@
 // Quiz DZ - Cards DZ Algerian Culture Quiz
-// 300 questions across 5 themes, 3 levels
+// 400 questions across 5 themes, 3 levels
 
 export const dzCatColors = {
   "Cuisine": "#e67e22",
@@ -311,4 +311,108 @@ export const dzQuestions = [
   { type: "qcm", theme: "Sports", level: 1, question: "Quel est le dirigeant sportif algérien, qui a été président de la Fédération algérienne de football de 2001 à 2005, puis de 2009 à 2017:", options: ["Khereddine Zetchi", "Mohamed Raouraoua", "Djahid Zefizef"], answer: "Mohamed Raouraoua" },
   { type: "jesuis", theme: "Sports", level: 2, question: "Je suis un footballeur international algérien, reconverti par la suite entraîneur. J'ai été joueur de  Marseille de 2000 à 2003, puis de  Manchester City. Je suis aussi  le premier lauréat de l’histoire du Ballon d’Or algérien l", answer: "Djamel Belmadi" },
   { type: "jesuis", theme: "Sports", level: 3, question: "Qui détient le record du meilleur buteur de l'histoire du championnat d'Algérie de football avec un impressionnant total de 131 buts marqués ?", answer: "Hacène Lalmas" },
+
+  // === NEW QUESTIONS — Sources: PDFs + Cultural Facts ===
+
+  // --- Cuisine (from La cuisine algérienne PDF + cultural facts) ---
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Comment surnomme-t-on le baghrir en raison de sa surface alvéolée caractéristique ?", options: ["Crêpe aux mille trous", "Galette du Sahara", "Pain aux bulles"], answer: "Crêpe aux mille trous" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis un plat sucré-salé emblématique du Ramadan, associant viande d'agneau, pruneaux, abricots, amandes et miel. Mon nom signifie littéralement \"viande douce\". Qui suis-je ?", answer: "Lham lahlou" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "En quelle année la tradition de préparation du couscous a-t-elle été inscrite au patrimoine culturel immatériel de l'UNESCO, et quels pays ont déposé la candidature conjointe ?", answer: "En 2020, par l'Algérie, le Maroc, la Tunisie et la Mauritanie" },
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Quel est le plat de rue emblématique de la ville de Biskra, à base de pois chiches et de fèves, assaisonné de harissa et de cumin ?", options: ["Doubara", "Garantita", "Loubia"], answer: "Doubara" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis un pain plat farci de tomates, oignons et poivrons, très populaire comme street food. Mon nom vient du mot \"hadjeb\" (sourcil) en référence à ma forme pliée. Qui suis-je ?", answer: "Mhadjeb" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Comment appelle-t-on le processus traditionnel de roulage à la main des grains de semoule pour préparer le couscous ?", answer: "Le tfetil" },
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Quel ustensile traditionnel utilise-t-on pour cuire le couscous à la vapeur ?", options: ["Le couscoussier (keskes)", "Le tajine en terre", "La marmite en cuivre"], answer: "Le couscoussier (keskes)" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis un pain très fin et sec, semblable à une crêpe séchée, utilisé comme base du plat chakhchoukha de Biskra. Comment m'appelle-t-on ?", answer: "Le rougag (ou trid)" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Quel est le nom de la truffe du désert, délicatesse prisée que l'on récolte dans le Sahara algérien après les pluies ?", answer: "Le terfass" },
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Quel jour de la semaine est traditionnellement associé au couscous dans les foyers algériens ?", options: ["Le vendredi", "Le dimanche", "Le mercredi"], answer: "Le vendredi" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis une variété de couscous à base d'orge, traditionnelle en Kabylie et dans les zones rurales. Comment me nomme-t-on ?", answer: "Le couscous noir ou belboula" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Quel est le nom du fromage traditionnel à base de lait fermenté dans une peau de chèvre, originaire de l'Aurès et du Hodna ?", answer: "Le Bouhezza" },
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Dans la tradition algérienne, quel entremets à base de semoule grillée offre-t-on aux visiteurs lors d'une naissance ?", options: ["La Tamina", "Le mesfouf", "La seffa"], answer: "La Tamina" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis le mot en darja algérienne désignant la farine d'orge grillée mélangée à l'eau, consommée par les voyageurs comme nourriture de route. Comment m'appelle-t-on ?", answer: "Bessissa" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Comment appelle-t-on le bol en bois sur pied, utilisé traditionnellement pour servir le couscous ?", answer: "Le mesherd" },
+
+  // --- Histoire & Lieux (from Monuments PDF, Napoleon III PDF, cultural facts) ---
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel empereur français a effectué un voyage de 40 jours en Algérie en 1865, visitant Alger, Oran, Mostaganem et la Kabylie ?", options: ["Napoléon Ier", "Napoléon III", "Louis-Philippe"], answer: "Napoléon III" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis un pont romain célèbre situé à l'entrée d'une gorge entre Batna et Biskra. Selon la légende, cette gorge fut ouverte par le talon d'Hercule (Calceus Herculis). Qui suis-je ?", answer: "Le pont d'El Kantara" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quelle était la largeur standard des grandes routes romaines en Algérie, et quel système ingénieux divisait la chaussée en deux voies de circulation ?", answer: "6 à 7 mètres de large, avec une bande centrale surélevée séparant les deux sens de circulation" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel nom antique portait la ville de Constantine à l'époque romaine ?", options: ["Cirta", "Hippo Regius", "Caesarea"], answer: "Cirta" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis l'ancien port romain de Cherchel, qui possédait deux ports distincts : un port marchand et un port militaire. Quel était mon nom antique ?", answer: "Caesarea" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quelle est la hauteur du pont romain de Constantine qui enjambait l'oued Rummel, et en quelle année s'est-il effondré ?", answer: "65 mètres de haut, effondré en 1857" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel nom antique portait la ville de Annaba à l'époque romaine ?", options: ["Hippo Regius", "Theveste", "Calama"], answer: "Hippo Regius" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis un système ingénieux d'irrigation souterraine utilisé depuis des siècles dans le Sahara algérien, notamment dans le Gourara. Des kilomètres de galeries souterraines captent l'eau et la distribuent par des seguias. Comment m'appelle-t-on ?", answer: "Les foggaras" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quel est le nom de l'architecte égyptien qui a conçu les plans de la mosquée Émir Abdelkader de Constantine ?", answer: "Moussa Mostafa Moussa" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel surnom donne-t-on à la ville de Timimoun dans le Sahara algérien ?", options: ["L'Oasis rouge", "La Perle du désert", "La Porte du Sahara"], answer: "L'Oasis rouge" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis le matériau de construction traditionnel de Timimoun, fait de briques d'argile, de paille et de chaux, qui donne sa couleur rouge caractéristique à la ville. Comment m'appelle-t-on ?", answer: "Le toub" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quel célèbre bey a fait restaurer le pont romain de Constantine au-dessus de l'oued Rummel en 1792 ?", answer: "Salah Bey" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quelle cité romaine en ruines, classée au patrimoine mondial de l'UNESCO, se trouve près de Batna dans les Aurès ?", options: ["Timgad", "Tipasa", "Djemila"], answer: "Timgad" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Au Moyen Âge, les caravanes traversaient le Gourara sur la route du sel, reliant le nord de l'Algérie à quelle célèbre ville africaine ?", answer: "Tombouctou (Mali)" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quel est le nom du premier hôtel construit en dur dans le désert ouvert, bâti en 1912 à Timimoun par les colons, considéré comme un joyau d'architecture soudanaise ?", answer: "L'Hôtel Oasis Rouge" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel nom antique portait la ville de Tébessa à l'époque romaine ?", options: ["Theveste", "Lambaesis", "Sitifis"], answer: "Theveste" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis le célèbre architecte français qui a conçu l'Hôtel Gourara à Timimoun. J'ai aussi réalisé de nombreux bâtiments à Alger. Qui suis-je ?", answer: "Fernand Pouillon" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Combien de personnes la mosquée Émir Abdelkader de Constantine peut-elle accueillir, et quelle est la hauteur de ses deux minarets ?", answer: "19 000 personnes, minarets de 107 mètres chacun" },
+
+  // --- Arts & Culture (from LesAlgeries PDF, dictionary PDF, cultural facts) ---
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Comment appelle-t-on les villages fortifiés du Sahara algérien, construits en terre et en pierre ?", options: ["Les ksour", "Les douars", "Les mechtas"], answer: "Les ksour" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "Je suis un chant mystique unique au monde, originaire du Gourara, comparé à une forme de gospel né de la souffrance des anciens esclaves. J'ai été inscrit au patrimoine de l'UNESCO. Qui suis-je ?", answer: "L'Ahellil du Gourara" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "Quels sont les trois instruments traditionnels utilisés pour accompagner l'ahellil du Gourara ?", answer: "La tagerebt (flûte), le petit guembri, et les pierres frappées avec les mains" },
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Comment dit-on \"bienvenue\" en darja algérienne ?", options: ["Ahlan wa sahlan", "Mabrouk alik", "Wallahi"], answer: "Ahlan wa sahlan" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "En darja, comment appelle-t-on un homme hypocrite, littéralement \"l'homme à double face\" ?", answer: "Bou ouejhein" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "Quel est le sens littéral de l'expression darja \"Ahlan wa sahlan\" ?", answer: "\"Famille et facilité\" — vous êtes parmi les vôtres et à votre aise" },
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Quel est le vêtement traditionnel algérien iconique, une cape à capuche en laine ?", options: ["Le burnous", "Le haïk", "Le jabadouli"], answer: "Le burnous" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "Je suis le tambour traditionnel arabe à cadre, instrument emblématique de la musique algérienne. Comment m'appelle-t-on ?", answer: "Le bendir" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "Que signifie le mot darja \"baroud\" et quelle tradition équestre spectaculaire y est associée ?", answer: "\"Baroud\" signifie poudre/gunpowder, associé à la fantasia (charge de cavalerie traditionnelle)" },
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Comment appelle-t-on la partie nord et cultivable de l'Algérie, par opposition au Sahara ?", options: ["Le Tell", "Le Hodna", "La Mitidja"], answer: "Le Tell" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "En Algérie, comment appelle-t-on le travail collectif d'entraide pour les labours ou la contribution commune pour le festin de mariage du marié ?", answer: "La tawiza (ou touiza)" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "Quelle héroïne algérienne, arrêtée et torturée pendant la guerre d'indépendance, est devenue un symbole international grâce au livre de Simone de Beauvoir et Gisèle Halimi ?", answer: "Djamila Boupacha" },
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Quel célèbre jardin botanique et zoo se trouve dans le quartier du Hamma à Alger ?", options: ["Le Jardin d'Essai du Hamma", "Le Parc de la Liberté", "Les Jardins de Bouzaréah"], answer: "Le Jardin d'Essai du Hamma" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "Je suis un percussionniste algérien de renommée mondiale, maître des rythmes africains et berbères, qui a collaboré avec de nombreux artistes internationaux. Qui suis-je ?", answer: "Guem" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "En 1975, un épisode de quelle célèbre bande dessinée de super-héros se déroulait dans les rues d'Alger, une première pour un décor nord-africain dans les comics américains ?", answer: "Spider-Man (L'Araignée à Alger)" },
+
+  // --- Musique (from PDF content + cultural facts) ---
+  { type: "qcm", theme: "Musique", level: 1, question: "Quel est le vrai nom de la chanteuse Cheikha Rimitti, pionnière du raï, surnommée \"la Mamie du Raï\" ?", options: ["Sadia Bedief", "Fatma Zohra", "Khadidja Benmoussa"], answer: "Sadia Bedief" },
+  { type: "jesuis", theme: "Musique", level: 2, question: "Je suis un instrument à corde touareg, inscrit au patrimoine immatériel de l'UNESCO, joué exclusivement par les femmes. Comment m'appelle-t-on ?", answer: "L'imzad" },
+  { type: "jesuis", theme: "Musique", level: 3, question: "En quelle année le raï a-t-il été inscrit sur la liste représentative du patrimoine culturel immatériel de l'humanité par l'UNESCO ?", answer: "En 2022" },
+  { type: "qcm", theme: "Musique", level: 1, question: "Quel est le vrai nom du chanteur kabyle Idir, célèbre pour \"A Vava Inouva\" ?", options: ["Hamid Cheriet", "Matoub Lounès", "Ait Ahmed"], answer: "Hamid Cheriet" },
+  { type: "jesuis", theme: "Musique", level: 2, question: "Je suis la chanteuse algéro-canadienne née Zehira Darabid à Alger, connue pour mes hits R&B. Ma famille a quitté l'Algérie pour Montréal en 1998 pendant la décennie noire. Qui suis-je ?", answer: "Zaho" },
+  { type: "jesuis", theme: "Musique", level: 3, question: "En quelle année Cheikha Rimitti s'est-elle installée à Paris, et quel festival de 1986 a lancé la mode du raï en France ?", answer: "Installée à Paris en 1978, le Festival de Bobigny en 1986 a lancé le raï en France" },
+  { type: "qcm", theme: "Musique", level: 1, question: "En 2021, une place a été inaugurée en l'honneur de Cheikha Rimitti dans quel quartier parisien ?", options: ["La Goutte d'Or (18e)", "Belleville (20e)", "Barbès (9e)"], answer: "La Goutte d'Or (18e)" },
+  { type: "jesuis", theme: "Musique", level: 2, question: "Je suis le chanteur algérien connu sous le surnom de \"Prince du Raï\", célèbre pour mon duo \"Desert Rose\" avec Sting. Qui suis-je ?", answer: "Cheb Mami" },
+  { type: "jesuis", theme: "Musique", level: 3, question: "Quel artiste palestino-algérien, né à Haïfa et élevé entre Amman et l'Algérie, est devenu une star internationale du R&B et du hip-hop ?", answer: "Saint Levant" },
+  { type: "qcm", theme: "Musique", level: 1, question: "Quelle chanson d'Idir, traduite en plusieurs langues, est considérée comme l'hymne de la chanson kabyle moderne ?", options: ["A Vava Inouva", "Isefra", "Zwit Rwit"], answer: "A Vava Inouva" },
+  { type: "jesuis", theme: "Musique", level: 2, question: "Je suis un genre musical algérien classique, né à Tlemcen et héritier de la tradition andalouse. Comment m'appelle-t-on ?", answer: "Le hawzi (ou musique andalouse de Tlemcen)" },
+  { type: "jesuis", theme: "Musique", level: 3, question: "Quelle chanteuse de Timimoun, issue de la famille Lebgaa, est considérée comme l'égérie de la musique gnaoui du Gourara et s'est produite à la Cité de la Musique à Paris ?", answer: "Aïcha Lebgaa" },
+
+  // --- Sports (cultural facts) ---
+  { type: "qcm", theme: "Sports", level: 1, question: "Quel athlète algérien a remporté la médaille d'or du marathon aux Jeux olympiques de 1928 à Amsterdam, alors qu'il courait pour la France ?", options: ["Boughera El Ouafi", "Alain Mimoun", "Noureddine Morceli"], answer: "Boughera El Ouafi" },
+  { type: "jesuis", theme: "Sports", level: 2, question: "Je suis le célèbre corsaire algérois du début du XIXe siècle, commandant de la flotte de la Régence d'Alger, connu pour mes exploits maritimes. Qui suis-je ?", answer: "Raïs Hamidou" },
+  { type: "jesuis", theme: "Sports", level: 3, question: "En quelle année Boughera El Ouafi a-t-il remporté le marathon olympique, et quelle était sa particularité en tant que coureur ?", answer: "En 1928 à Amsterdam. Il était ouvrier chez Renault et s'entraînait seul sans club ni entraîneur" },
+
+  // --- Histoire & Lieux (more cultural facts) ---
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel est le phare le plus haut d'Afrique, situé sur les falaises près de Béjaïa ?", options: ["Le phare de Cap Carbon", "Le phare de Cap Ténès", "Le phare de Ras El Hamra"], answer: "Le phare de Cap Carbon" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis le fondateur de la dynastie almohade au XIIe siècle, né en Algérie dans la région de Tlemcen, j'ai unifié le Maghreb. Qui suis-je ?", answer: "Abd al-Mu'min" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Comment s'appelait l'atelier de frappe de monnaie de la Régence d'Alger, et quel nom portait la pièce d'or standard ?", answer: "Dar Al Sikka (l'atelier monétaire), et la pièce s'appelait le Boudjou" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel nom antique portait la ville de Skikda à l'époque romaine ?", options: ["Rusicade", "Icosium", "Tipasa"], answer: "Rusicade" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Je suis la grande route romaine qui reliait Carthage à Theveste (Tébessa), traversant le territoire algérien. Sous quel empereur ai-je été construite ou reconstruite ?", answer: "Sous l'empereur Hadrien" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quel artiste plasticien algérien, doyen des peintres nationaux, a joué un rôle majeur dans la conception du mihrab de la mosquée Émir Abdelkader de Constantine ?", answer: "Bachir Yellès" },
+
+  // --- Arts & Culture (more cultural facts) ---
+  { type: "qcm", theme: "Arts & Culture", level: 1, question: "Quel nœud ornemental est un symbole traditionnel algérien de l'amour et de l'union, souvent présent dans l'artisanat et les bijoux ?", options: ["Le nœud de l'amour algérien", "Le nœud de Fatma", "Le nœud kabyle"], answer: "Le nœud de l'amour algérien" },
+  { type: "jesuis", theme: "Arts & Culture", level: 2, question: "En darja algérienne, que signifie l'expression \"Tbarak Allah\" et dans quelle situation l'utilise-t-on ?", answer: "\"Dieu soit béni\" — on l'utilise pour exprimer l'admiration ou éloigner le mauvais œil" },
+  { type: "jesuis", theme: "Arts & Culture", level: 3, question: "Comment s'appelle la pratique sociale et religieuse de pèlerinage aux saints dans le Gourara, et combien de saints sont vénérés dans cette région ?", answer: "La ziarra (ou ziarate), avec environ 300 saints dont 40 à 50 font encore l'objet de célébrations importantes" },
+
+  // --- Cuisine (more from dictionary/cultural facts) ---
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Comment dit-on \"café fort\" en darja algérienne ?", options: ["Qahwa thqila", "Qahwa kebira", "Atay saghir"], answer: "Qahwa thqila" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Quel est le nom du plat traditionnel des Aurès, fait de galettes séchées déchirées et nappées d'un ragoût épicé, spécialité de Biskra ?", answer: "Chakhchoukha" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Quel est le sens exact du mot \"chtitha\" dans les plats algériens comme chtitha djedj ou chtitha lham ?", answer: "\"Chtitha\" signifie \"dansée\", en référence au mouvement de frémissement de la sauce qui mijote" },
+  { type: "qcm", theme: "Cuisine", level: 1, question: "Quel plat algérien est traditionnellement servi pour célébrer le Mawlid (anniversaire du Prophète) dans la région d'Alger ?", options: ["La Rechta", "Le couscous", "La chorba"], answer: "La Rechta" },
+  { type: "jesuis", theme: "Cuisine", level: 2, question: "Je suis la tête de mouton préparée et vendue comme street food populaire en Algérie, souvent consommée lors de l'Aïd el-Kébir. Comment m'appelle-t-on en darja ?", answer: "Bouzelouf (ou bouzellouf)" },
+  { type: "jesuis", theme: "Cuisine", level: 3, question: "Quel est le nom de la variété de dattes la plus prisée du Gourara, cueillie fraîche directement sur le palmier ?", answer: "La Takerboucht" },
+
+  // --- Histoire & Lieux (Napoleon III, ancient Algeria) ---
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Combien de jours a duré le voyage de Napoléon III en Algérie en 1865 ?", options: ["40 jours", "15 jours", "3 mois"], answer: "40 jours" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "Sous quel empereur romain les routes reliant Cirta (Constantine) à Rusicade (Skikda) ont-elles été reconstruites ?", answer: "L'empereur Hadrien" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Quel était le système de fondation des routes romaines en Algérie, combien de couches superposées comprenait-il ?", answer: "5 couches : lit de gravier fin, base de dalles, pierre concassée en béton, ciment avec sable grossier, couche finale de ciment convexe avec pavés pour la traction" },
+  { type: "qcm", theme: "Histoire & Lieux", level: 1, question: "Quel port antique algérien possédait deux bassins distincts : un port marchand et un port militaire ?", options: ["Caesarea (Cherchel)", "Tipasa", "Icosium (Alger)"], answer: "Caesarea (Cherchel)" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 2, question: "En 1847, lors de travaux de dragage dans le port antique de Cherchel, quelle découverte remarquable a été faite ?", answer: "Deux carcasses de galères romaines" },
+  { type: "jesuis", theme: "Histoire & Lieux", level: 3, question: "Comment s'appelaient les stations de ravitaillement en eau situées le long des routes romaines en Algérie, destinées aux voyageurs et aux animaux ?", answer: "Les centenaria" },
 ];

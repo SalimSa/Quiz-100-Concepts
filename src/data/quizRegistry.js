@@ -25,7 +25,7 @@ export const quizzes = [
     catColors: dzCatColors,
     allQuestions: dzQuestions,
     conceptDetails: dzConceptDetails,
-    questionCounts: [30, 50, 100],
+    questionCounts: [30, 50, 100, 200],
     hasDetailCards: true,
     questionTypes: "QCM · Qui suis-je · Expert",
   },
