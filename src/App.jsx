@@ -480,7 +480,7 @@ export default function App() {
             <div className="feedback-answer">Bonne réponse : <b>{wr.answer || wr.intrus}</b></div>
             {wr.explain && <p className="feedback-explain">{wr.explain}</p>}
           </div>
-          {quiz?.hasDetailCards && <DetailCard q={wr} />}
+          {quiz?.hasDetailCards && <DetailCard q={wr} conceptDetails={quiz?.conceptDetails} catColors={catColors} />}
         </div>
         <div className="actions">
           <button className="btn-success" onClick={() => {
@@ -698,18 +698,8 @@ export default function App() {
           </div>
         )}
 
-        {revealed && quiz?.hasDetailCards && <DetailCard q={q} />}
+        {revealed && quiz?.hasDetailCards && <DetailCard q={q} conceptDetails={quiz?.conceptDetails} catColors={catColors} />}
 
-        {revealed && !quiz?.hasDetailCards && q.url && (
-          <a href={q.url} target="_blank" rel="noopener noreferrer" className="detail-link" style={{ color: catColors[q.theme], marginTop: 12, display: "inline-flex" }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-            En savoir plus sur ce thème
-          </a>
-        )}
       </div>
 
       <div className="actions">

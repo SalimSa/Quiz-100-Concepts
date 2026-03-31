@@ -9,28 +9,6 @@ export const dzCatColors = {
   "Sports": "#3498db",
 };
 
-export const dzThemeUrls = {
-  "Cuisine": [
-    "https://fr.wikipedia.org/wiki/Cuisine_alg%C3%A9rienne",
-    "https://www.unesco.org/fr/articles/les-traditions-du-couscous-lunesco-un-exemple-de-cooperation-culturelle-internationale",
-  ],
-  "Arts & Culture": [
-    "https://fr.wikipedia.org/wiki/Culture_alg%C3%A9rienne",
-    "https://fr.wikipedia.org/wiki/Litt%C3%A9rature_alg%C3%A9rienne",
-  ],
-  "Histoire & Lieux": [
-    "https://fr.wikipedia.org/wiki/Liste_du_patrimoine_mondial_en_Alg%C3%A9rie",
-    "https://ich.unesco.org/fr/etat/algerie-DZ",
-  ],
-  "Musique": [
-    "https://fr.wikipedia.org/wiki/Musique_alg%C3%A9rienne",
-    "https://ich.unesco.org/fr/RL/le-rai-chant-populaire-d-algerie-01894",
-  ],
-  "Sports": [
-    "https://fr.wikipedia.org/wiki/Sport_en_Alg%C3%A9rie",
-    "https://fr.wikipedia.org/wiki/%C3%89quipe_d'Alg%C3%A9rie_de_football",
-  ],
-};
 
 export const dzQuestions = [
   { type: "qcm", theme: "Cuisine", level: 1, question: "Je suis un plat délicieux à base de semoule cuite à la vapeur, généralement servi avec des légumes et de la viande. Bien que souvent présenté en grande quantité, vous ne pourrez résister à l'envie d'en reprendre encore et encore. Suis-je:", options: ["Taboulé", "Salade de quinoa", "Le couscous"], answer: "Le couscous" },

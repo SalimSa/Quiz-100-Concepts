@@ -1,11 +1,6 @@
 import { catColors, allQuestions, conceptDetails } from "./quizData.js";
-import { dzCatColors, dzQuestions, dzThemeUrls } from "./quizDZ.js";
-
-// Add URLs to DZ questions based on theme
-const dzQuestionsWithUrls = dzQuestions.map((q) => {
-  const urls = dzThemeUrls[q.theme];
-  return urls ? { ...q, url: urls[Math.floor(Math.random() * urls.length)] } : q;
-});
+import { dzCatColors, dzQuestions } from "./quizDZ.js";
+import { dzConceptDetails } from "./dzConceptDetails.js";
 
 export const quizzes = [
   {
@@ -28,10 +23,10 @@ export const quizzes = [
     description: "Culture, histoire & patrimoine algérien",
     gradient: "linear-gradient(135deg, #2ecc71, #e67e22)",
     catColors: dzCatColors,
-    allQuestions: dzQuestionsWithUrls,
-    conceptDetails: {},
+    allQuestions: dzQuestions,
+    conceptDetails: dzConceptDetails,
     questionCounts: [30, 50, 100],
-    hasDetailCards: false,
+    hasDetailCards: true,
     questionTypes: "QCM · Qui suis-je · Expert",
   },
 ];

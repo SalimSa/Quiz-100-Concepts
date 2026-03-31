@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { catColors, conceptDetails } from "../data/quizData.js";
 import { getDetail } from "../data/utils.js";
 
 const circleColors = ["#e8453c", "#f5a623", "#2ecc71", "#7b61ff"];
 
-export default function DetailCard({ q }) {
+export default function DetailCard({ q, conceptDetails = {}, catColors = {} }) {
   const [open, setOpen] = useState(false);
   const d = getDetail(conceptDetails, q);
-  const themeColor = catColors[q.theme];
+  const themeColor = catColors[q.theme] || "#7b61ff";
 
   if (!open) {
     return (
@@ -153,9 +152,9 @@ export default function DetailCard({ q }) {
           </div>
         )}
 
-        {q.url && (
+        {(q.url || d.url) && (
           <a
-            href={q.url}
+            href={q.url || d.url}
             target="_blank"
             rel="noopener noreferrer"
             className="detail-link"
