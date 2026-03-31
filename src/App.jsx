@@ -48,6 +48,22 @@ function loadLeaderboard() {
   }
 }
 
+function loadSavedQuiz() {
+  try {
+    return JSON.parse(localStorage.getItem("quiz_saved"));
+  } catch {
+    return null;
+  }
+}
+
+function saveSavedQuiz(data) {
+  localStorage.setItem("quiz_saved", JSON.stringify(data));
+}
+
+function clearSavedQuiz() {
+  localStorage.removeItem("quiz_saved");
+}
+
 export default function App() {
   // Auth
   const [user, setUser] = useState(loadUser);
@@ -82,9 +98,11 @@ export default function App() {
   const inputRef = useRef(null);
   const revealCalledRef = useRef(false);
 
-  // History
+  // History & saved progress
   const [history, setHistory] = useState(loadHistory);
   const [showProfile, setShowProfile] = useState(false);
+  const [savedQuiz, setSavedQuiz] = useState(loadSavedQuiz);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const TIMER_DURATION = { 1: 20, 2: 30, 3: 40 };
 
@@ -148,10 +166,63 @@ export default function App() {
     setShowProfile(false);
   };
 
+  // ===== SAVE & RESUME =====
+  const handleSaveAndExit = () => {
+    clearInterval(timerRef.current);
+    const data = {
+      quizId: activeQuizId,
+      quizTitle: quiz?.title || "",
+      questions,
+      idx: revealed ? idx + 1 : idx, // If revealed, save next question index
+      score,
+      maxScore,
+      results,
+      qCount,
+      timerEnabled,
+      savedAt: new Date().toISOString(),
+    };
+    saveSavedQuiz(data);
+    setSavedQuiz(data);
+    setShowExitConfirm(false);
+    setScreen("hub");
+  };
+
+  const resumeQuiz = (saved) => {
+    const qz = getQuiz(saved.quizId);
+    if (!qz) return;
+    setActiveQuizId(saved.quizId);
+    setQuestions(saved.questions);
+    setIdx(saved.idx);
+    setScore(saved.score);
+    setMaxScore(saved.maxScore);
+    setResults(saved.results);
+    setQCount(saved.qCount);
+    setTimerEnabled(saved.timerEnabled || false);
+    setAns("");
+    setSelOpt(null);
+    setRevealed(false);
+    setPRank(null);
+    setReviewMode(false);
+    setReviewIdx(0);
+    setShowConfetti(false);
+    setShowExitConfirm(false);
+    if (saved.questions[saved.idx]) prepQ(saved.questions[saved.idx]);
+    clearSavedQuiz();
+    setSavedQuiz(null);
+    setScreen("quiz");
+  };
+
+  const handleDiscardSaved = () => {
+    clearSavedQuiz();
+    setSavedQuiz(null);
+  };
+
   // ===== QUIZ HANDLERS =====
   const startQuiz = useCallback((quizId, count) => {
     const qz = getQuiz(quizId);
     if (!qz) return;
+    clearSavedQuiz();
+    setSavedQuiz(null);
     setActiveQuizId(quizId);
     const qs = selectQuestions(qz.allQuestions, qz.catColors, count);
     setQCount(count);
@@ -368,6 +439,27 @@ export default function App() {
               {user?.name?.[0]?.toUpperCase() || "?"}
             </button>
           </div>
+
+          {savedQuiz && (
+            <div className="saved-quiz-card animate-in">
+              <div className="saved-quiz-header">
+                <span className="saved-quiz-badge">⏸️ En cours</span>
+                <button className="saved-quiz-discard" onClick={handleDiscardSaved}>✕</button>
+              </div>
+              <div className="saved-quiz-body">
+                <span className="saved-quiz-icon">{quizzes.find((qz) => qz.id === savedQuiz.quizId)?.icon || "📝"}</span>
+                <div className="saved-quiz-info">
+                  <div className="saved-quiz-title">{savedQuiz.quizTitle}</div>
+                  <div className="saved-quiz-progress">
+                    Question {savedQuiz.idx}/{savedQuiz.qCount} · {savedQuiz.score} pts
+                  </div>
+                </div>
+              </div>
+              <button className="saved-quiz-resume" onClick={() => resumeQuiz(savedQuiz)}>
+                Reprendre →
+              </button>
+            </div>
+          )}
 
           <div className="hub-quizzes">
             {quizzes.map((qz, i) => (
@@ -595,8 +687,27 @@ export default function App() {
 
   return (
     <div className="app">
+      {showExitConfirm && (
+        <div className="modal-overlay" onClick={() => setShowExitConfirm(false)}>
+          <div className="modal-card animate-scale" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">Quitter le quiz ?</h3>
+            <p className="modal-desc">Ta progression sera sauvegardée. Tu pourras reprendre plus tard.</p>
+            <div className="modal-info">
+              <span>Question {idx + 1}/{qCount}</span>
+              <span>·</span>
+              <span>{score} pts</span>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-btn-save" onClick={handleSaveAndExit}>💾 Sauvegarder & quitter</button>
+              <button className="modal-btn-cancel" onClick={() => setShowExitConfirm(false)}>Continuer le quiz</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="progress-bar">
         <div className="progress-top">
+          <button className="quiz-exit-btn" onClick={() => setShowExitConfirm(true)}>✕</button>
           <span className="progress-count">{idx + 1}/{questions.length}</span>
           {timerEnabled && !revealed && timer !== null && (
             <div className="timer">
