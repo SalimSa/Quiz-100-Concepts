@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { catColors, allQuestions } from "./data/quizData.js";
+import { quizzes, getQuiz } from "./data/quizRegistry.js";
 import {
   shuffle,
   checkAnswer,
@@ -13,6 +13,31 @@ import DetailCard from "./components/DetailCard.jsx";
 import Confetti from "./components/Confetti.jsx";
 import "./styles.css";
 
+// ===== AUTH / PROFILE HELPERS =====
+function loadUser() {
+  try {
+    return JSON.parse(localStorage.getItem("quiz_user"));
+  } catch {
+    return null;
+  }
+}
+
+function saveUser(user) {
+  localStorage.setItem("quiz_user", JSON.stringify(user));
+}
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem("quiz_history") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(history) {
+  localStorage.setItem("quiz_history", JSON.stringify(history));
+}
+
 function loadLeaderboard() {
   try {
     const stored = JSON.parse(localStorage.getItem("quiz_lb") || "[]");
@@ -24,7 +49,16 @@ function loadLeaderboard() {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState("home");
+  // Auth
+  const [user, setUser] = useState(loadUser);
+  const [loginName, setLoginName] = useState("");
+  const [loginError, setLoginError] = useState("");
+
+  // Navigation
+  const [screen, setScreen] = useState(user ? "hub" : "login");
+  const [activeQuizId, setActiveQuizId] = useState(null);
+
+  // Quiz state
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
   const [ans, setAns] = useState("");
@@ -35,8 +69,6 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [qCount, setQCount] = useState(0);
   const [lb, setLb] = useState([]);
-  const [pName, setPName] = useState("");
-  const [nameOk, setNameOk] = useState(false);
   const [pRank, setPRank] = useState(null);
   const [shuffledOpts, setShuffledOpts] = useState([]);
   const [shuffledIntrus, setShuffledIntrus] = useState([]);
@@ -50,7 +82,14 @@ export default function App() {
   const inputRef = useRef(null);
   const revealCalledRef = useRef(false);
 
+  // History
+  const [history, setHistory] = useState(loadHistory);
+  const [showProfile, setShowProfile] = useState(false);
+
   const TIMER_DURATION = { 1: 20, 2: 30, 3: 40 };
+
+  const quiz = activeQuizId ? getQuiz(activeQuizId) : null;
+  const catColors = quiz?.catColors || {};
 
   useEffect(() => {
     if (screen === "quiz" && questions[idx]?.type === "jesuis" && !revealed) {
@@ -72,10 +111,9 @@ export default function App() {
           if (!revealCalledRef.current) {
             revealCalledRef.current = true;
             setRevealed(true);
-            // Record 0 points
             const pts = lvlPts[q.level];
             setMaxScore((m) => m + pts);
-            setResults((r) => [...r, { ...q, userAnswer: "⏱️ Temps ecoulé", correct: false, pts: 0, answer: q.answer || q.intrus }]);
+            setResults((r) => [...r, { ...q, userAnswer: "⏱️ Temps écoulé", correct: false, pts: 0, answer: q.answer || q.intrus }]);
           }
           return 0;
         }
@@ -90,9 +128,33 @@ export default function App() {
     if (q.type === "intrus") setShuffledIntrus(shuffle(q.items));
   }, []);
 
-  const startQuiz = useCallback((c) => {
-    const qs = selectQuestions(allQuestions, catColors, c);
-    setQCount(c);
+  // ===== AUTH HANDLERS =====
+  const handleLogin = () => {
+    const name = loginName.trim();
+    if (!name) { setLoginError("Entre ton prénom"); return; }
+    if (name.length < 2) { setLoginError("Minimum 2 caractères"); return; }
+    const u = { name, createdAt: new Date().toISOString() };
+    saveUser(u);
+    setUser(u);
+    setLoginError("");
+    setScreen("hub");
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("quiz_user");
+    setLoginName("");
+    setScreen("login");
+    setShowProfile(false);
+  };
+
+  // ===== QUIZ HANDLERS =====
+  const startQuiz = useCallback((quizId, count) => {
+    const qz = getQuiz(quizId);
+    if (!qz) return;
+    setActiveQuizId(quizId);
+    const qs = selectQuestions(qz.allQuestions, qz.catColors, count);
+    setQCount(count);
     setQuestions(qs);
     setIdx(0);
     setScore(0);
@@ -101,8 +163,6 @@ export default function App() {
     setAns("");
     setSelOpt(null);
     setRevealed(false);
-    setPName("");
-    setNameOk(false);
     setPRank(null);
     setReviewMode(false);
     setReviewIdx(0);
@@ -124,9 +184,10 @@ export default function App() {
       setResults((r) => [...r, { ...q, userAnswer: selOpt, correct: ok, pts: ok ? 1 : 0 }]);
     } else if (q.type === "jesuis") {
       const ok = checkAnswer(ans, q.answer, q.acceptAlt);
-      setScore((s) => s + (ok ? 2 : 0));
-      setMaxScore((m) => m + 2);
-      setResults((r) => [...r, { ...q, userAnswer: ans, correct: ok, pts: ok ? 2 : 0 }]);
+      const pts = lvlPts[q.level];
+      setScore((s) => s + (ok ? pts : 0));
+      setMaxScore((m) => m + pts);
+      setResults((r) => [...r, { ...q, userAnswer: ans, correct: ok, pts: ok ? pts : 0 }]);
     } else if (q.type === "intrus") {
       const ok = selOpt === q.intrus;
       setScore((s) => s + (ok ? 3 : 0));
@@ -137,10 +198,37 @@ export default function App() {
 
   const nextQ = () => {
     if (idx + 1 >= questions.length) {
+      // Save to history
+      const finalPct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+      const entry = {
+        id: genId(),
+        quizId: activeQuizId,
+        quizTitle: quiz?.title || "",
+        score,
+        max: maxScore,
+        pct: finalPct,
+        count: qCount,
+        date: new Date().toISOString().slice(0, 10),
+        userName: user?.name || "",
+      };
+      const newHistory = [entry, ...loadHistory()].slice(0, 50);
+      saveHistory(newHistory);
+      setHistory(newHistory);
+
+      // Save to leaderboard
+      try {
+        const stored = JSON.parse(localStorage.getItem("quiz_lb") || "[]");
+        stored.push({ ...entry, name: user?.name || "Anonyme" });
+        localStorage.setItem("quiz_lb", JSON.stringify(stored));
+      } catch {}
+
       setScreen("results");
       setLb(loadLeaderboard());
-      const finalPct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
       if (finalPct >= 75) setShowConfetti(true);
+
+      const freshLb = loadLeaderboard();
+      const rank = freshLb.findIndex((e) => e.id === entry.id) + 1;
+      setPRank(rank || null);
       return;
     }
     const ni = idx + 1;
@@ -151,27 +239,13 @@ export default function App() {
     if (questions[ni]) prepQ(questions[ni]);
   };
 
-  const handleNameSubmit = () => {
-    if (!pName.trim()) return;
-    setNameOk(true);
-    const pctVal = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
-    const entry = { name: pName.trim(), score, max: maxScore, pct: pctVal, count: qCount, date: new Date().toISOString().slice(0, 10), id: genId() };
-    try {
-      const stored2 = JSON.parse(localStorage.getItem("quiz_lb") || "[]");
-      stored2.push(entry);
-      localStorage.setItem("quiz_lb", JSON.stringify(stored2));
-    } catch {}
-    const freshLb = loadLeaderboard();
-    setLb(freshLb);
-    setPRank(freshLb.findIndex((e) => e.id === entry.id) + 1);
-  };
-
   const handleShare = async () => {
     const pctVal = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
-    const text = `\u{1F9E0} Quiz des 100 Concepts\n\u{1F4CA} Score : ${score}/${maxScore} (${pctVal}%)\n\u{1F4DD} ${qCount} questions\n\nTu peux faire mieux ?`;
+    const title = quiz?.title || "Quiz";
+    const text = `🧠 ${title}\n📊 Score : ${score}/${maxScore} (${pctVal}%)\n📝 ${qCount} questions\n\nTu peux faire mieux ?`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Quiz des 100 Concepts", text });
+        await navigator.share({ title, text });
       } else {
         await navigator.clipboard.writeText(text);
         setCopied(true);
@@ -190,25 +264,180 @@ export default function App() {
   const lastR = results.length > 0 ? results[results.length - 1] : null;
   const wrongResults = results.filter((r) => !r.correct);
 
-  // ===== HOME =====
-  if (screen === "home") {
+  // ===== LOGIN SCREEN =====
+  if (screen === "login") {
+    return (
+      <div className="app">
+        <div className="login-screen">
+          <div className="login-icon">🧠</div>
+          <h1 className="login-title">Quiz Platform</h1>
+          <p className="login-subtitle">Teste tes connaissances sur des quiz variés</p>
+          <div className="login-card animate-in">
+            <h2 className="login-card-title">Connexion</h2>
+            <p className="login-card-desc">Entre ton prénom pour sauvegarder tes scores</p>
+            <input
+              type="text"
+              value={loginName}
+              onChange={(e) => { setLoginName(e.target.value); setLoginError(""); }}
+              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+              placeholder="Ton prénom..."
+              maxLength={20}
+              className="login-input"
+              autoFocus
+            />
+            {loginError && <p className="login-error">{loginError}</p>}
+            <button className="login-btn" onClick={handleLogin} disabled={!loginName.trim()}>
+              Commencer →
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== PROFILE SCREEN =====
+  if (showProfile) {
+    const userHistory = history.filter((h) => h.userName === user?.name);
+    const avgPct = userHistory.length > 0 ? Math.round(userHistory.reduce((s, h) => s + h.pct, 0) / userHistory.length) : 0;
+    const totalGames = userHistory.length;
+    const bestPct = userHistory.length > 0 ? Math.max(...userHistory.map((h) => h.pct)) : 0;
+
+    return (
+      <div className="app">
+        <div className="profile-screen">
+          <div className="profile-header">
+            <button className="back-btn" onClick={() => setShowProfile(false)}>← Retour</button>
+          </div>
+          <div className="profile-avatar">{user?.name?.[0]?.toUpperCase() || "?"}</div>
+          <h2 className="profile-name">{user?.name}</h2>
+          <p className="profile-since">Membre depuis le {user?.createdAt?.slice(0, 10)}</p>
+
+          <div className="profile-stats">
+            <div className="stat-card">
+              <div className="stat-value">{totalGames}</div>
+              <div className="stat-label">Parties</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{avgPct}%</div>
+              <div className="stat-label">Moyenne</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{bestPct}%</div>
+              <div className="stat-label">Meilleur</div>
+            </div>
+          </div>
+
+          <div className="history-section">
+            <h3 className="history-title">Historique</h3>
+            {userHistory.length === 0 && (
+              <p className="history-empty">Aucune partie jouée pour le moment</p>
+            )}
+            {userHistory.slice(0, 20).map((h, i) => (
+              <div key={i} className="history-item animate-in" style={{ animationDelay: `${i * 0.03}s` }}>
+                <div className="history-item-left">
+                  <span className="history-quiz-icon">{quizzes.find((qz) => qz.id === h.quizId)?.icon || "📝"}</span>
+                  <div>
+                    <div className="history-quiz-name">{h.quizTitle || h.quizId}</div>
+                    <div className="history-date">{h.date} · {h.count}q</div>
+                  </div>
+                </div>
+                <div className="history-score" style={{ color: h.pct >= 75 ? "#2ecc71" : h.pct >= 50 ? "#f5a623" : "#e8453c" }}>
+                  {h.pct}%
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button className="logout-btn" onClick={handleLogout}>Se déconnecter</button>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== QUIZ HUB =====
+  if (screen === "hub") {
+    return (
+      <div className="app">
+        <div className="hub-screen">
+          <div className="hub-header">
+            <div>
+              <h1 className="hub-greeting">Salut, {user?.name} 👋</h1>
+              <p className="hub-subtitle">Choisis un quiz</p>
+            </div>
+            <button className="hub-avatar" onClick={() => setShowProfile(true)}>
+              {user?.name?.[0]?.toUpperCase() || "?"}
+            </button>
+          </div>
+
+          <div className="hub-quizzes">
+            {quizzes.map((qz, i) => (
+              <button
+                key={qz.id}
+                className={`hub-quiz-card animate-in stagger-${i + 1}`}
+                onClick={() => { setActiveQuizId(qz.id); setScreen("home"); }}
+              >
+                <div className="hub-quiz-icon" style={{ background: qz.gradient }}>{qz.icon}</div>
+                <div className="hub-quiz-info">
+                  <h3 className="hub-quiz-title">{qz.title}</h3>
+                  <p className="hub-quiz-desc">{qz.description}</p>
+                  <div className="hub-quiz-meta">
+                    <span>{Object.keys(qz.catColors).length} thèmes</span>
+                    <span>·</span>
+                    <span>{qz.allQuestions.length} questions</span>
+                    <span>·</span>
+                    <span>{qz.questionTypes}</span>
+                  </div>
+                </div>
+                <span className="hub-quiz-arrow">→</span>
+              </button>
+            ))}
+          </div>
+
+          {history.length > 0 && (
+            <div className="hub-recent">
+              <h3 className="hub-recent-title">Dernières parties</h3>
+              {history.filter((h) => h.userName === user?.name).slice(0, 3).map((h, i) => (
+                <div key={i} className="history-item">
+                  <div className="history-item-left">
+                    <span className="history-quiz-icon">{quizzes.find((qz) => qz.id === h.quizId)?.icon || "📝"}</span>
+                    <div>
+                      <div className="history-quiz-name">{h.quizTitle}</div>
+                      <div className="history-date">{h.date} · {h.count}q</div>
+                    </div>
+                  </div>
+                  <div className="history-score" style={{ color: h.pct >= 75 ? "#2ecc71" : h.pct >= 50 ? "#f5a623" : "#e8453c" }}>
+                    {h.pct}%
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ===== HOME (quiz config) =====
+  if (screen === "home" && quiz) {
     return (
       <div className="app">
         <div className="home">
-          <div className="home-icon">🧠</div>
-          <h1 className="home-title">Quiz des 100 Concepts</h1>
-          <p className="home-subtitle">Teste tes connaissances sur les concepts les plus puissants</p>
+          <button className="back-btn" onClick={() => setScreen("hub")} style={{ marginBottom: 16 }}>← Retour aux quiz</button>
+          <div className="home-icon">{quiz.icon}</div>
+          <h1 className="home-title">{quiz.title}</h1>
+          <p className="home-subtitle">{quiz.description}</p>
           <p className="home-label">Combien de questions ?</p>
-          {[
-            { n: 30, e: "⚡", cls: "btn-30", s: "~15 min" },
-            { n: 50, e: "🔥", cls: "btn-50", s: "~25 min" },
-            { n: 100, e: "🏆", cls: "btn-100", s: "~45 min" },
-          ].map(({ n, e, cls, s }, i) => (
-            <button key={n} className={`btn ${cls} animate-in stagger-${i + 1}`} onClick={() => startQuiz(n)}>
-              {n} questions {e}
-              <div className="btn-sub">{s}</div>
-            </button>
-          ))}
+          {quiz.questionCounts.map((n, i) => {
+            const cls = i === 0 ? "btn-30" : i === 1 ? "btn-50" : "btn-100";
+            const emojis = ["⚡", "🔥", "🏆"];
+            const times = ["~15 min", "~25 min", "~45 min"];
+            return (
+              <button key={n} className={`btn ${cls} animate-in stagger-${i + 1}`} onClick={() => startQuiz(quiz.id, n)}>
+                {n} questions {emojis[i]}
+                <div className="btn-sub">{times[i]}</div>
+              </button>
+            );
+          })}
           <button className="share-btn" style={{ margin: "24px auto 0", display: "flex" }} onClick={() => setTimerEnabled((t) => !t)}>
             {timerEnabled ? "⏱️ Timer activé" : "⏱️ Activer le timer"}
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: timerEnabled ? "#2ecc71" : "#666", marginLeft: 4 }} />
@@ -218,7 +447,7 @@ export default function App() {
             <div className="levels-list">
               <div>🟢 <b>Facile</b> — QCM (1 pt)</div>
               <div>🟡 <b>Moyen</b> — « Je suis... » (2 pts)</div>
-              <div>🔴 <b>Expert</b> — L'intrus (3 pts)</div>
+              <div>🔴 <b>Expert</b> — Question ouverte (3 pts)</div>
             </div>
           </div>
         </div>
@@ -251,7 +480,7 @@ export default function App() {
             <div className="feedback-answer">Bonne réponse : <b>{wr.answer || wr.intrus}</b></div>
             {wr.explain && <p className="feedback-explain">{wr.explain}</p>}
           </div>
-          <DetailCard q={wr} />
+          {quiz?.hasDetailCards && <DetailCard q={wr} />}
         </div>
         <div className="actions">
           <button className="btn-success" onClick={() => {
@@ -290,38 +519,26 @@ export default function App() {
 
         <div className="lb-section animate-in">
           <h3 className="lb-title">🏅 Classement</h3>
-          {!nameOk ? (
-            <div>
-              <p style={{ color: "#aaa", fontSize: 13, marginBottom: 10, textAlign: "center" }}>Entre ton nom :</p>
-              <div className="lb-input-row">
-                <input type="text" value={pName} onChange={(e) => setPName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleNameSubmit()} placeholder="Prénom..." maxLength={20} className="lb-input" />
-                <button onClick={handleNameSubmit} disabled={!pName.trim()} className="lb-submit" style={{ background: pName.trim() ? "var(--gradient-main)" : undefined, color: pName.trim() ? "#fff" : undefined }}>OK</button>
+          {pRank && (
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 14, color: "#aaa" }}>{user?.name}, tu es classé</div>
+              <div className="animate-bounce" style={{ fontSize: 36, fontWeight: 800, color: pRank <= 3 ? "#f5a623" : "#7b61ff" }}>
+                {pRank <= 3 ? ["🥇", "🥈", "🥉"][pRank - 1] : `#${pRank}`}
               </div>
-            </div>
-          ) : (
-            <div>
-              {pRank && (
-                <div style={{ textAlign: "center", marginBottom: 16 }}>
-                  <div style={{ fontSize: 14, color: "#aaa" }}>Tu es classé</div>
-                  <div className="animate-bounce" style={{ fontSize: 36, fontWeight: 800, color: pRank <= 3 ? "#f5a623" : "#7b61ff" }}>
-                    {pRank <= 3 ? ["🥇", "🥈", "🥉"][pRank - 1] : `#${pRank}`}
-                  </div>
-                  <div style={{ fontSize: 13, color: "#888" }}>sur {lb.length} joueur{lb.length > 1 ? "s" : ""}</div>
-                </div>
-              )}
-              {lb.slice(0, 15).map((e, i) => {
-                const isMe = e.name === pName.trim() && e.score === score;
-                return (
-                  <div key={i} className={`lb-entry ${isMe ? "me" : ""}`}>
-                    <span className="lb-rank" style={{ color: i < 3 ? "#f5a623" : "#666" }}>{i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}.`}</span>
-                    <span className="lb-name" style={{ color: isMe ? "#fff" : "#ccc", fontWeight: isMe ? 700 : 400 }}>{e.name}</span>
-                    <span className="lb-pct" style={{ color: e.pct >= 75 ? "#2ecc71" : e.pct >= 50 ? "#f5a623" : "#e8453c" }}>{e.pct}%</span>
-                    <span className="lb-detail">{e.score}/{e.max}</span>
-                  </div>
-                );
-              })}
+              <div style={{ fontSize: 13, color: "#888" }}>sur {lb.length} joueur{lb.length > 1 ? "s" : ""}</div>
             </div>
           )}
+          {lb.slice(0, 15).map((e, i) => {
+            const isMe = e.name === user?.name && e.id === (pRank ? lb[pRank - 1]?.id : null);
+            return (
+              <div key={i} className={`lb-entry ${isMe ? "me" : ""}`}>
+                <span className="lb-rank" style={{ color: i < 3 ? "#f5a623" : "#666" }}>{i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}.`}</span>
+                <span className="lb-name" style={{ color: isMe ? "#fff" : "#ccc", fontWeight: isMe ? 700 : 400 }}>{e.name}</span>
+                <span className="lb-pct" style={{ color: e.pct >= 75 ? "#2ecc71" : e.pct >= 50 ? "#f5a623" : "#e8453c" }}>{e.pct}%</span>
+                <span className="lb-detail">{e.score}/{e.max}</span>
+              </div>
+            );
+          })}
         </div>
 
         {wrongResults.length > 0 && (
@@ -364,8 +581,9 @@ export default function App() {
           ))}
         </div>
 
-        <div style={{ padding: "20px 16px 40px", textAlign: "center" }}>
-          <button className="btn-primary" onClick={() => setScreen("home")}>Rejouer 🔄</button>
+        <div style={{ padding: "20px 16px 40px", textAlign: "center", display: "flex", gap: 12, justifyContent: "center" }}>
+          <button className="btn-primary" style={{ flex: 1 }} onClick={() => setScreen("home")}>Rejouer 🔄</button>
+          <button className="btn-success" style={{ flex: 1 }} onClick={() => setScreen("hub")}>Autres quiz →</button>
         </div>
       </div>
     );
@@ -430,7 +648,7 @@ export default function App() {
         {q.type === "jesuis" && (
           <>
             <p className="q-text">{q.question}</p>
-            <input ref={inputRef} type="text" value={ans} onChange={(e) => setAns(e.target.value)} placeholder="Le nom du concept..." disabled={revealed} onKeyDown={(e) => e.key === "Enter" && !revealed && ans.trim() && handleReveal()} autoComplete="off" spellCheck="false" className={`text-input ${revealed ? (lastR?.correct ? "correct" : "wrong") : ""}`} />
+            <input ref={inputRef} type="text" value={ans} onChange={(e) => setAns(e.target.value)} placeholder="Ta réponse..." disabled={revealed} onKeyDown={(e) => e.key === "Enter" && !revealed && ans.trim() && handleReveal()} autoComplete="off" spellCheck="false" className={`text-input ${revealed ? (lastR?.correct ? "correct" : "wrong") : ""}`} />
             <p className="text-hint">💡 L'orthographe approximative est acceptée</p>
           </>
         )}
@@ -480,7 +698,18 @@ export default function App() {
           </div>
         )}
 
-        {revealed && <DetailCard q={q} />}
+        {revealed && quiz?.hasDetailCards && <DetailCard q={q} />}
+
+        {revealed && !quiz?.hasDetailCards && q.url && (
+          <a href={q.url} target="_blank" rel="noopener noreferrer" className="detail-link" style={{ color: catColors[q.theme], marginTop: 12, display: "inline-flex" }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            En savoir plus sur ce thème
+          </a>
+        )}
       </div>
 
       <div className="actions">
