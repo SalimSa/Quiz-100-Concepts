@@ -10,10 +10,9 @@ export default function DetailCard({ q, conceptDetails = {}, catColors = {} }) {
 
   if (!open) {
     return (
-      <button className="detail-toggle" onClick={() => setOpen(true)}>
-        <span style={{ fontSize: 18 }}>{d.visual.split("")[0]}</span>
-        <span>Details & visuel explicatif</span>
-        <span style={{ fontSize: 11 }}>▼</span>
+      <button className="detail-toggle detail-toggle-highlight" onClick={() => setOpen(true)}>
+        <span style={{ fontSize: 20 }}>📖</span>
+        <span>Découvrir la réponse en détail →</span>
       </button>
     );
   }
@@ -161,8 +160,8 @@ export default function DetailCard({ q, conceptDetails = {}, catColors = {} }) {
             style={{ color: themeColor }}
           >
             <svg
-              width="12"
-              height="12"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -172,7 +171,7 @@ export default function DetailCard({ q, conceptDetails = {}, catColors = {} }) {
               <polyline points="15 3 21 3 21 9" />
               <line x1="10" y1="14" x2="21" y2="3" />
             </svg>
-            En savoir plus sur {q.concept || q.answer || q.intrus}
+            📖 En savoir plus sur {q.concept || q.answer || q.intrus} →
           </a>
         )}
       </div>

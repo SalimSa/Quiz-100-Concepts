@@ -90,8 +90,11 @@ export default function App() {
   const [shuffledIntrus, setShuffledIntrus] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const [copied, setCopied] = useState(false);
+  const isDZ = activeQuizId === "dz";
   const [reviewMode, setReviewMode] = useState(false);
   const [reviewIdx, setReviewIdx] = useState(0);
+  const [skipped, setSkipped] = useState([]);
+  const [skippedPass, setSkippedPass] = useState(false);
   const [timer, setTimer] = useState(null);
   const [timerEnabled, setTimerEnabled] = useState(false);
   const timerRef = useRef(null);
@@ -104,7 +107,7 @@ export default function App() {
   const [savedQuiz, setSavedQuiz] = useState(loadSavedQuiz);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
-  const TIMER_DURATION = { 1: 20, 2: 30, 3: 40 };
+  const TIMER_DURATION = { 1: 30, 2: 30, 3: 30 };
 
   const quiz = activeQuizId ? getQuiz(activeQuizId) : null;
   const catColors = quiz?.catColors || {};
@@ -179,6 +182,8 @@ export default function App() {
       results,
       qCount,
       timerEnabled,
+      skipped,
+      skippedPass,
       savedAt: new Date().toISOString(),
     };
     saveSavedQuiz(data);
@@ -206,6 +211,8 @@ export default function App() {
     setReviewIdx(0);
     setShowConfetti(false);
     setShowExitConfirm(false);
+    setSkipped(saved.skipped || []);
+    setSkippedPass(saved.skippedPass || false);
     if (saved.questions[saved.idx]) prepQ(saved.questions[saved.idx]);
     clearSavedQuiz();
     setSavedQuiz(null);
@@ -238,6 +245,8 @@ export default function App() {
     setReviewMode(false);
     setReviewIdx(0);
     setShowConfetti(false);
+    setSkipped([]);
+    setSkippedPass(false);
     if (qs[0]) prepQ(qs[0]);
     setScreen("quiz");
   }, [prepQ]);
@@ -267,41 +276,83 @@ export default function App() {
     }
   };
 
+  const finishQuiz = () => {
+    const finalPct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+    const entry = {
+      id: genId(),
+      quizId: activeQuizId,
+      quizTitle: quiz?.title || "",
+      score,
+      max: maxScore,
+      pct: finalPct,
+      count: qCount,
+      date: new Date().toISOString().slice(0, 10),
+      userName: user?.name || "",
+    };
+    const newHistory = [entry, ...loadHistory()].slice(0, 50);
+    saveHistory(newHistory);
+    setHistory(newHistory);
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("quiz_lb") || "[]");
+      stored.push({ ...entry, name: user?.name || "Anonyme" });
+      localStorage.setItem("quiz_lb", JSON.stringify(stored));
+    } catch {}
+
+    setScreen("results");
+    setLb(loadLeaderboard());
+    if (finalPct >= 75) setShowConfetti(true);
+
+    const freshLb = loadLeaderboard();
+    const rank = freshLb.findIndex((e) => e.id === entry.id) + 1;
+    setPRank(rank || null);
+  };
+
   const nextQ = () => {
     if (idx + 1 >= questions.length) {
-      // Save to history
-      const finalPct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
-      const entry = {
-        id: genId(),
-        quizId: activeQuizId,
-        quizTitle: quiz?.title || "",
-        score,
-        max: maxScore,
-        pct: finalPct,
-        count: qCount,
-        date: new Date().toISOString().slice(0, 10),
-        userName: user?.name || "",
-      };
-      const newHistory = [entry, ...loadHistory()].slice(0, 50);
-      saveHistory(newHistory);
-      setHistory(newHistory);
-
-      // Save to leaderboard
-      try {
-        const stored = JSON.parse(localStorage.getItem("quiz_lb") || "[]");
-        stored.push({ ...entry, name: user?.name || "Anonyme" });
-        localStorage.setItem("quiz_lb", JSON.stringify(stored));
-      } catch {}
-
-      setScreen("results");
-      setLb(loadLeaderboard());
-      if (finalPct >= 75) setShowConfetti(true);
-
-      const freshLb = loadLeaderboard();
-      const rank = freshLb.findIndex((e) => e.id === entry.id) + 1;
-      setPRank(rank || null);
+      // End of current pass -- check for skipped questions
+      if (!skippedPass && skipped.length > 0) {
+        // Start second pass with skipped questions
+        const skippedQs = skipped;
+        setQuestions(skippedQs);
+        setSkipped([]);
+        setSkippedPass(true);
+        setIdx(0);
+        setAns("");
+        setSelOpt(null);
+        setRevealed(false);
+        if (skippedQs[0]) prepQ(skippedQs[0]);
+        return;
+      }
+      finishQuiz();
       return;
     }
+    const ni = idx + 1;
+    setIdx(ni);
+    setAns("");
+    setSelOpt(null);
+    setRevealed(false);
+    if (questions[ni]) prepQ(questions[ni]);
+  };
+
+  const handleSkip = () => {
+    if (!q || revealed) return;
+    clearInterval(timerRef.current);
+    const newSkipped = [...skipped, q];
+    // Advance to next question or start second pass
+    if (idx + 1 >= questions.length) {
+      // Last question of first pass -- start second pass with all skipped
+      setQuestions(newSkipped);
+      setSkipped([]);
+      setSkippedPass(true);
+      setIdx(0);
+      setAns("");
+      setSelOpt(null);
+      setRevealed(false);
+      if (newSkipped[0]) prepQ(newSkipped[0]);
+      return;
+    }
+    setSkipped(newSkipped);
     const ni = idx + 1;
     setIdx(ni);
     setAns("");
@@ -338,7 +389,7 @@ export default function App() {
   // ===== LOGIN SCREEN =====
   if (screen === "login") {
     return (
-      <div className="app">
+      <div className={`app${isDZ ? " quiz-dz" : ""}`}>
         <div className="login-screen">
           <div className="login-icon">🧠</div>
           <h1 className="login-title">Quiz Platform</h1>
@@ -374,7 +425,7 @@ export default function App() {
     const bestPct = userHistory.length > 0 ? Math.max(...userHistory.map((h) => h.pct)) : 0;
 
     return (
-      <div className="app">
+      <div className={`app${isDZ ? " quiz-dz" : ""}`}>
         <div className="profile-screen">
           <div className="profile-header">
             <button className="back-btn" onClick={() => setShowProfile(false)}>← Retour</button>
@@ -428,7 +479,7 @@ export default function App() {
   // ===== QUIZ HUB =====
   if (screen === "hub") {
     return (
-      <div className="app">
+      <div className={`app${isDZ ? " quiz-dz" : ""}`}>
         <div className="hub-screen">
           <div className="hub-header">
             <div>
@@ -512,7 +563,7 @@ export default function App() {
   // ===== HOME (quiz config) =====
   if (screen === "home" && quiz) {
     return (
-      <div className="app">
+      <div className={`app${isDZ ? " quiz-dz" : ""}`}>
         <div className="home">
           <button className="back-btn" onClick={() => setScreen("hub")} style={{ marginBottom: 16 }}>← Retour aux quiz</button>
           <div className="home-icon">{quiz.icon}</div>
@@ -520,7 +571,7 @@ export default function App() {
           <p className="home-subtitle">{quiz.description}</p>
           <p className="home-label">Combien de questions ?</p>
           {quiz.questionCounts.map((n, i) => {
-            const cls = ["btn-30", "btn-50", "btn-100", "btn-200"][i] || "btn-100";
+            const cls = ["btn-30", "btn-50", "btn-100", "btn-300"][i] || "btn-100";
             const labels = ["Facile", "Pro", "Expert", "Ultra"];
             const emojis = ["⚡", "🔥", "🏆", "💎"];
             return (
@@ -551,7 +602,7 @@ export default function App() {
     const wr = wrongResults[reviewIdx];
     if (!wr) { setScreen("results"); return null; }
     return (
-      <div className="app">
+      <div className={`app${isDZ ? " quiz-dz" : ""}`}>
         <div className="progress-bar">
           <div className="progress-top">
             <span className="progress-count">Révision {reviewIdx + 1}/{wrongResults.length}</span>
@@ -685,7 +736,7 @@ export default function App() {
   const prog = ((idx + 1) / questions.length) * 100;
 
   return (
-    <div className="app">
+    <div className={`app${isDZ ? " quiz-dz" : ""}`}>
       {showExitConfirm && (
         <div className="modal-overlay" onClick={() => setShowExitConfirm(false)}>
           <div className="modal-card animate-scale" onClick={(e) => e.stopPropagation()}>
@@ -704,10 +755,21 @@ export default function App() {
         </div>
       )}
 
-      <div className="progress-bar">
-        <div className="progress-top">
-          <button className="quiz-exit-btn" onClick={() => setShowExitConfirm(true)}>✕</button>
-          <span className="progress-count">{idx + 1}/{questions.length}</span>
+      {/* Quiz top bar: name + avatar + home */}
+      <div className="quiz-topbar">
+        <button className="quiz-home-btn" onClick={() => setShowExitConfirm(true)} title="Sauvegarder & quitter">
+          <svg className="quiz-home-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          <span className="quiz-home-label">Quitter</span>
+        </button>
+        <div className="quiz-topbar-info">
+          <span className="quiz-topbar-name">{quiz?.title}</span>
+          <span className="quiz-topbar-theme" style={{ color: catColors[q.theme] }}>{q.theme}</span>
+        </div>
+        <div className="quiz-topbar-right">
           {timerEnabled && !revealed && timer !== null && (
             <div className="timer">
               <div className="timer-circle" style={{
@@ -717,6 +779,21 @@ export default function App() {
               }}>{timer}</div>
             </div>
           )}
+          {skipped.length > 0 && !skippedPass && (
+            <span className="skipped-count">⏭️ {skipped.length}</span>
+          )}
+          <button className="quiz-avatar-btn" onClick={() => setShowExitConfirm(true)} title={user?.name}>
+            {user?.name?.[0]?.toUpperCase() || "?"}
+          </button>
+        </div>
+      </div>
+
+      <div className="progress-bar" style={{ paddingTop: 0 }}>
+        <div className="progress-top">
+          <span className="progress-count">
+            {skippedPass && <span className="skipped-pass-badge">2e tour</span>}
+            {idx + 1}/{questions.length}
+          </span>
           <div className="progress-score">{score} <span>pts</span></div>
         </div>
         <div className="progress-track">
@@ -814,9 +891,20 @@ export default function App() {
 
       <div className="actions">
         {!revealed ? (
-          <button className="btn-primary" onClick={handleReveal} disabled={q.type === "jesuis" ? !ans.trim() : !selOpt}>Valider ✓</button>
+          <>
+            <button className="btn-primary" onClick={handleReveal} disabled={q.type === "jesuis" ? !ans.trim() : !selOpt}>Valider ✓</button>
+            {!skippedPass && (
+              <button className="btn-skip" onClick={handleSkip}>Passer →</button>
+            )}
+          </>
         ) : (
-          <button className="btn-success" onClick={nextQ}>{idx + 1 >= questions.length ? "Voir les résultats 🏆" : "Suivante →"}</button>
+          <button className="btn-success" onClick={nextQ}>
+            {idx + 1 >= questions.length
+              ? (!skippedPass && skipped.length > 0
+                  ? `Questions passées (${skipped.length}) →`
+                  : "Voir les résultats 🏆")
+              : "Suivante →"}
+          </button>
         )}
       </div>
     </div>

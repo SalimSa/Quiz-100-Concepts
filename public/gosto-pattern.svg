@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="900" viewBox="0 0 800 900">
+  <defs>
+    <style>
+      .icon { fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+      .icon-fill { fill: rgba(255,255,255,0.08); stroke: rgba(255,255,255,0.12); stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <!-- Row 1 -->
+  <!-- Fennec head -->
+  <g transform="translate(80, 60) scale(0.7)">
+    <path class="icon" d="M50,20 Q30,-15 15,5 Q5,20 20,40 Q25,45 30,48 L50,65 L70,48 Q75,45 80,40 Q95,20 85,5 Q70,-15 50,20Z"/>
+    <circle class="icon" cx="38" cy="35" r="3"/>
+    <circle class="icon" cx="62" cy="35" r="3"/>
+    <ellipse class="icon" cx="50" cy="48" rx="5" ry="3"/>
+    <rect class="icon-fill" x="40" y="12" width="20" height="10" rx="2" style="fill:rgba(196,30,58,0.15);stroke:rgba(196,30,58,0.2)"/>
+  </g>
+
+  <!-- Camel with palm -->
+  <g transform="translate(250, 50) scale(0.6)">
+    <path class="icon" d="M30,80 L30,40 Q30,25 45,20 L55,18 Q60,15 58,10 L60,5 Q62,8 65,10 L63,18 L70,22 Q80,28 80,40 L80,80"/>
+    <line class="icon" x1="35" y1="80" x2="35" y2="95"/>
+    <line class="icon" x1="45" y1="80" x2="45" y2="95"/>
+    <line class="icon" x1="70" y1="80" x2="70" y2="95"/>
+    <line class="icon" x1="75" y1="80" x2="75" y2="95"/>
+    <!-- Palm tree -->
+    <line class="icon" x1="110" y1="95" x2="110" y2="30"/>
+    <path class="icon" d="M110,30 Q95,15 80,20"/>
+    <path class="icon" d="M110,30 Q125,15 140,20"/>
+    <path class="icon" d="M110,28 Q100,10 90,8"/>
+    <path class="icon" d="M110,28 Q120,10 130,8"/>
+  </g>
+
+  <!-- Mosque -->
+  <g transform="translate(450, 45) scale(0.55)">
+    <rect class="icon" x="20" y="50" width="100" height="50" rx="2"/>
+    <path class="icon" d="M30,50 Q70,10 110,50"/>
+    <line class="icon" x1="70" y1="10" x2="70" y2="0"/>
+    <circle class="icon" cx="70" cy="-2" r="4"/>
+    <!-- Minarets -->
+    <rect class="icon" x="10" y="30" width="10" height="70"/>
+    <rect class="icon" x="120" y="30" width="10" height="70"/>
+    <circle class="icon" cx="15" cy="28" r="5"/>
+    <circle class="icon" cx="125" cy="28" r="5"/>
+    <!-- Windows -->
+    <path class="icon" d="M45,70 Q45,60 55,60 Q65,60 65,70 L65,100 L45,100Z"/>
+    <path class="icon" d="M75,70 Q75,60 85,60 Q95,60 95,70 L95,100 L75,100Z"/>
+  </g>
+
+  <!-- Football -->
+  <g transform="translate(670, 55) scale(0.5)">
+    <circle class="icon" cx="40" cy="40" r="35"/>
+    <path class="icon" d="M40,5 L30,20 L50,20Z"/>
+    <path class="icon" d="M75,40 L60,30 L60,50Z"/>
+    <path class="icon" d="M40,75 L50,60 L30,60Z"/>
+    <path class="icon" d="M5,40 L20,50 L20,30Z"/>
+    <circle class="icon-fill" cx="55" cy="18" r="4" style="stroke:rgba(255,255,255,0.1)"/>
+  </g>
+
+  <!-- Row 2 -->
+  <!-- Tagine -->
+  <g transform="translate(40, 220) scale(0.6)">
+    <ellipse class="icon" cx="50" cy="70" rx="45" ry="12"/>
+    <path class="icon" d="M15,65 Q50,0 85,65"/>
+    <circle class="icon" cx="50" cy="8" r="5"/>
+  </g>
+
+  <!-- Maqam Echahid (monument) -->
+  <g transform="translate(220, 190) scale(0.55)">
+    <path class="icon" d="M60,100 L40,20 Q60,-5 80,20 L60,100"/>
+    <path class="icon" d="M60,100 L20,30 Q40,5 60,20"/>
+    <path class="icon" d="M60,100 L100,30 Q80,5 60,20"/>
+    <line class="icon" x1="60" y1="100" x2="60" y2="110"/>
+    <ellipse class="icon" cx="60" cy="112" rx="30" ry="5"/>
+  </g>
+
+  <!-- Derbouka (drum) -->
+  <g transform="translate(400, 210) scale(0.6)">
+    <path class="icon" d="M25,10 Q25,0 50,0 Q75,0 75,10 L70,50 Q70,70 50,70 Q30,70 30,50Z"/>
+    <ellipse class="icon" cx="50" cy="8" rx="25" ry="8"/>
+    <path class="icon" d="M35,30 Q50,40 65,30"/>
+  </g>
+
+  <!-- Theiere (teapot) -->
+  <g transform="translate(570, 200) scale(0.55)">
+    <ellipse class="icon" cx="55" cy="75" rx="35" ry="10"/>
+    <path class="icon" d="M25,75 Q20,40 35,30 L75,30 Q90,40 85,75"/>
+    <path class="icon" d="M55,30 L55,15 Q55,8 60,8 L65,8"/>
+    <!-- Handle -->
+    <path class="icon" d="M85,50 Q110,40 100,70"/>
+    <!-- Spout -->
+    <path class="icon" d="M25,50 Q5,35 10,20"/>
+  </g>
+
+  <!-- Row 3 -->
+  <!-- Arc de Timgad -->
+  <g transform="translate(100, 370) scale(0.55)">
+    <rect class="icon" x="10" y="0" width="20" height="90"/>
+    <rect class="icon" x="90" y="0" width="20" height="90"/>
+    <path class="icon" d="M30,30 Q60,0 90,30"/>
+    <rect class="icon" x="10" y="0" width="100" height="12"/>
+    <rect class="icon" x="5" y="-5" width="110" height="8" rx="2"/>
+    <!-- Small arches -->
+    <path class="icon" d="M15,60 Q25,50 35,60"/>
+    <path class="icon" d="M85,60 Q95,50 105,60"/>
+  </g>
+
+  <!-- Croissant & star (flag) -->
+  <g transform="translate(320, 380) scale(0.6)">
+    <circle class="icon" cx="40" cy="40" r="35"/>
+    <path class="icon-fill" d="M30,15 Q55,15 55,40 Q55,65 30,65 Q45,60 45,40 Q45,20 30,15Z"/>
+    <polygon class="icon" points="62,30 65,38 73,38 67,43 69,51 62,46 55,51 57,43 51,38 59,38"/>
+  </g>
+
+  <!-- Haik (traditional dress) -->
+  <g transform="translate(500, 360) scale(0.55)">
+    <path class="icon" d="M40,10 Q50,0 60,10 L70,30 Q80,60 75,100 L25,100 Q20,60 30,30Z"/>
+    <circle class="icon" cx="50" cy="15" r="8"/>
+    <path class="icon" d="M30,40 Q20,50 15,70"/>
+    <path class="icon" d="M70,40 Q80,50 85,70"/>
+    <line class="icon" x1="45" y1="50" x2="55" y2="50"/>
+  </g>
+
+  <!-- Samsa/bourek -->
+  <g transform="translate(680, 370) scale(0.55)">
+    <ellipse class="icon" cx="50" cy="65" rx="45" ry="10"/>
+    <path class="icon" d="M25,60 L50,20 L75,60"/>
+    <path class="icon" d="M40,60 L55,30 L70,60"/>
+    <path class="icon" d="M15,60 L35,35 L55,60"/>
+  </g>
+
+  <!-- Row 4 -->
+  <!-- Musician with mandole -->
+  <g transform="translate(50, 530) scale(0.5)">
+    <circle class="icon" cx="40" cy="15" r="12"/>
+    <!-- Fez -->
+    <rect class="icon-fill" x="32" y="2" width="16" height="10" rx="1" style="fill:rgba(196,30,58,0.1)"/>
+    <line class="icon" x1="48" y1="5" x2="52" y2="8"/>
+    <!-- Body -->
+    <path class="icon" d="M25,30 L20,90 L60,90 L55,30"/>
+    <!-- Mandole -->
+    <ellipse class="icon" cx="80" cy="55" rx="15" ry="25"/>
+    <line class="icon" x1="80" y1="30" x2="80" y2="20"/>
+    <line class="icon" x1="55" y1="45" x2="65" y2="50"/>
+  </g>
+
+  <!-- Jersey -->
+  <g transform="translate(240, 530) scale(0.55)">
+    <path class="icon" d="M30,15 L10,30 L20,35 L25,25 L25,85 L75,85 L75,25 L80,35 L90,30 L70,15Z"/>
+    <path class="icon" d="M40,15 Q50,25 60,15"/>
+    <!-- Pattern on jersey -->
+    <line class="icon" x1="35" y1="40" x2="65" y2="40" style="opacity:0.5"/>
+    <line class="icon" x1="35" y1="55" x2="65" y2="55" style="opacity:0.5"/>
+    <line class="icon" x1="35" y1="70" x2="65" y2="70" style="opacity:0.5"/>
+    <circle class="icon-fill" cx="50" cy="35" r="4" style="stroke:rgba(255,255,255,0.1)"/>
+  </g>
+
+  <!-- Trophy/Cup -->
+  <g transform="translate(440, 540) scale(0.55)">
+    <path class="icon" d="M30,10 L25,50 Q25,70 50,70 Q75,70 75,50 L70,10Z"/>
+    <rect class="icon" x="40" y="70" width="20" height="15"/>
+    <ellipse class="icon" cx="50" cy="90" rx="25" ry="6"/>
+    <!-- Handles -->
+    <path class="icon" d="M30,20 Q10,20 10,35 Q10,50 25,50"/>
+    <path class="icon" d="M70,20 Q90,20 90,35 Q90,50 75,50"/>
+  </g>
+
+  <!-- Chechia/Fez -->
+  <g transform="translate(620, 540) scale(0.6)">
+    <path class="icon" d="M20,50 Q20,15 50,10 Q80,15 80,50"/>
+    <ellipse class="icon" cx="50" cy="50" rx="30" ry="8"/>
+    <line class="icon" x1="50" y1="10" x2="55" y2="5"/>
+    <path class="icon" d="M55,5 Q60,8 58,15"/>
+  </g>
+
+  <!-- Row 5 -->
+  <!-- Burnous (traditional man) -->
+  <g transform="translate(130, 700) scale(0.5)">
+    <circle class="icon" cx="40" cy="12" r="10"/>
+    <path class="icon" d="M20,25 Q15,30 10,80 L70,80 Q65,30 60,25"/>
+    <path class="icon" d="M30,25 Q40,35 50,25"/>
+    <line class="icon" x1="40" y1="80" x2="40" y2="95"/>
+    <line class="icon" x1="30" y1="95" x2="50" y2="95"/>
+  </g>
+
+  <!-- Stade (stadium) -->
+  <g transform="translate(300, 720) scale(0.5)">
+    <path class="icon" d="M10,50 Q60,20 110,50"/>
+    <rect class="icon" x="10" y="50" width="100" height="20" rx="2"/>
+    <line class="icon" x1="30" y1="50" x2="30" y2="70"/>
+    <line class="icon" x1="50" y1="50" x2="50" y2="70"/>
+    <line class="icon" x1="70" y1="50" x2="70" y2="70"/>
+    <line class="icon" x1="90" y1="50" x2="90" y2="70"/>
+    <path class="icon" d="M20,45 Q60,30 100,45" style="opacity:0.5"/>
+  </g>
+
+  <!-- Verre de the (tea glass) -->
+  <g transform="translate(520, 710) scale(0.6)">
+    <path class="icon" d="M25,15 L20,65 Q20,72 35,72 L55,72 Q70,72 70,65 L65,15Z"/>
+    <line class="icon" x1="25" y1="15" x2="65" y2="15"/>
+    <path class="icon" d="M30,35 Q45,45 60,35" style="opacity:0.5"/>
+  </g>
+
+  <!-- Small tagine -->
+  <g transform="translate(680, 720) scale(0.45)">
+    <ellipse class="icon" cx="50" cy="70" rx="40" ry="10"/>
+    <path class="icon" d="M18,65 Q50,5 82,65"/>
+    <circle class="icon" cx="50" cy="10" r="4"/>
+  </g>
+
+  <!-- Scattered small elements -->
+  <!-- Small star -->
+  <polygon class="icon" points="730,160 733,170 743,170 735,176 738,186 730,180 722,186 725,176 717,170 727,170" style="opacity:0.08"/>
+
+  <!-- Small diamond -->
+  <polygon class="icon" points="170,480 180,470 190,480 180,490" style="opacity:0.06"/>
+
+  <!-- Small dots pattern -->
+  <circle class="icon-fill" cx="380" cy="160" r="2" style="opacity:0.06"/>
+  <circle class="icon-fill" cx="400" cy="155" r="2" style="opacity:0.06"/>
+  <circle class="icon-fill" cx="390" cy="170" r="2" style="opacity:0.06"/>
+
+  <!-- Tifinagh-style marks -->
+  <g transform="translate(350, 480)" style="opacity:0.08">
+    <line class="icon" x1="0" y1="0" x2="0" y2="15"/>
+    <line class="icon" x1="8" y1="0" x2="8" y2="12" />
+    <circle class="icon" cx="16" cy="6" r="4"/>
+    <line class="icon" x1="24" y1="2" x2="28" y2="14"/>
+  </g>
+</svg>

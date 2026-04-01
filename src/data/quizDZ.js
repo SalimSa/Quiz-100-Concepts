@@ -2,11 +2,11 @@
 // 400 questions across 5 themes, 3 levels
 
 export const dzCatColors = {
-  "Cuisine": "#e67e22",
-  "Arts & Culture": "#9b59b6",
-  "Histoire & Lieux": "#2ecc71",
-  "Musique": "#e74c3c",
-  "Sports": "#3498db",
+  "Cuisine": "#D4A017",
+  "Arts & Culture": "#1B6B3A",
+  "Histoire & Lieux": "#C41E3A",
+  "Musique": "#8B5E3C",
+  "Sports": "#2D8B55",
 };
 
 

@@ -157,7 +157,7 @@ body {
 .btn-30 { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 .btn-50 { background: linear-gradient(135deg, #f5a623, #e8453c); }
 .btn-100 { background: linear-gradient(135deg, #7b61ff, #e91e8f); }
-.btn-200 { background: linear-gradient(135deg, #e91e8f, #ff4500); }
+.btn-300 { background: linear-gradient(135deg, #e91e8f, #ff4500); }
 
 .btn-sub { font-size: 12px; font-weight: 400; opacity: 0.85; margin-top: 4px; }
 
@@ -454,6 +454,29 @@ body {
 
 .detail-toggle:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
 
+.detail-toggle-highlight {
+  border: 2px solid rgba(123,97,255,0.4);
+  border-style: solid;
+  background: linear-gradient(135deg, rgba(123,97,255,0.1), rgba(232,69,60,0.06));
+  color: #ddd;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 18px;
+  animation: detailPulse 2s ease-in-out infinite;
+}
+
+.detail-toggle-highlight:hover {
+  background: linear-gradient(135deg, rgba(123,97,255,0.18), rgba(232,69,60,0.1));
+  border-color: rgba(123,97,255,0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(123,97,255,0.2);
+}
+
+@keyframes detailPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(123,97,255,0.0); }
+  50% { box-shadow: 0 0 12px 3px rgba(123,97,255,0.25); }
+}
+
 .detail-card {
   margin-top: 10px;
   border-radius: var(--radius);
@@ -481,16 +504,34 @@ body {
 .detail-text { color: #ccc; font-size: 13px; line-height: 1.6; margin: 0; }
 
 .detail-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 12px;
-  font-size: 12px;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
   text-decoration: none;
+  color: #fff !important;
+  background: linear-gradient(135deg, rgba(123,97,255,0.25), rgba(232,69,60,0.2));
+  border: 1px solid rgba(123,97,255,0.35);
+  border-radius: var(--radius-sm);
   transition: var(--transition);
+  letter-spacing: 0.2px;
 }
 
-.detail-link:hover { opacity: 0.8; }
+.detail-link:hover {
+  background: linear-gradient(135deg, rgba(123,97,255,0.4), rgba(232,69,60,0.3));
+  border-color: rgba(123,97,255,0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(123,97,255,0.2);
+}
+
+.detail-link svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
 
 /* ===== DIAGRAM VARIANTS ===== */
 .diagram { margin-top: 14px; }
@@ -1350,4 +1391,351 @@ body {
 @media (min-width: 768px) {
   .app { padding: 20px; }
   .q-card { padding: 28px 24px; }
+}
+
+/* ===== GOSTO DZ THEME ===== */
+.quiz-dz {
+  --gosto-green: #1B6B3A;
+  --gosto-green-light: #2D8B55;
+  --gosto-red: #C41E3A;
+  --gosto-cream: #F5F0E8;
+  --gosto-gold: #D4A017;
+  --gosto-brown: #8B5E3C;
+  background:
+    url('/gosto-pattern.svg') repeat,
+    linear-gradient(145deg, #0a2e1a 0%, #0d3a20 50%, #0a2815 100%);
+  background-size: 400px 450px, cover;
+}
+
+/* Home screen title */
+.quiz-dz .home-title {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light), var(--gosto-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Home buttons — GOSTO green shades */
+.quiz-dz .btn-30 { background: linear-gradient(135deg, #2D8B55, #1B6B3A); }
+.quiz-dz .btn-50 { background: linear-gradient(135deg, #1B6B3A, #145A2F); }
+.quiz-dz .btn-100 { background: linear-gradient(135deg, #145A2F, #C41E3A); }
+.quiz-dz .btn-300 { background: linear-gradient(135deg, #C41E3A, #8B1425); }
+
+/* Progress bar */
+.quiz-dz .progress-score {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+.quiz-dz .progress-fill {
+  background: linear-gradient(90deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+/* Question card */
+.quiz-dz .q-card {
+  background: rgba(27, 107, 58, 0.08);
+  border: 1px solid rgba(27, 107, 58, 0.15);
+}
+
+.quiz-dz .q-card::before {
+  background: var(--gosto-green);
+}
+
+/* Options */
+.quiz-dz .option-btn.selected {
+  border-color: var(--gosto-green);
+  background: rgba(27, 107, 58, 0.12);
+}
+
+.quiz-dz .option-btn:not(:disabled):hover {
+  border-color: rgba(27, 107, 58, 0.4);
+  background: rgba(27, 107, 58, 0.06);
+}
+
+/* Text input focus */
+.quiz-dz .text-input:focus {
+  border-color: var(--gosto-green);
+  background: rgba(27, 107, 58, 0.06);
+}
+
+/* Intrus */
+.quiz-dz .intrus-btn.selected {
+  border-color: var(--gosto-green);
+  background: rgba(27, 107, 58, 0.12);
+}
+
+/* Primary & success buttons */
+.quiz-dz .btn-primary {
+  background: linear-gradient(135deg, #fff, #e8e8e8);
+  color: #1B6B3A;
+  font-weight: 800;
+  text-shadow: none;
+  border: 2px solid rgba(27,107,58,0.2);
+}
+
+.quiz-dz .btn-primary:hover {
+  background: linear-gradient(135deg, #fff, #f0f0f0);
+  box-shadow: 0 6px 20px rgba(255,255,255,0.25);
+}
+
+.quiz-dz .btn-primary:disabled {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.3);
+  border-color: transparent;
+}
+
+.quiz-dz .btn-success {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+/* Detail card link */
+.quiz-dz .detail-link {
+  color: #fff !important;
+  background: linear-gradient(135deg, rgba(27,107,58,0.35), rgba(45,139,85,0.25));
+  border-color: rgba(45,139,85,0.5);
+}
+
+.quiz-dz .detail-link:hover {
+  background: linear-gradient(135deg, rgba(27,107,58,0.55), rgba(45,139,85,0.4));
+  border-color: rgba(45,139,85,0.7);
+  box-shadow: 0 4px 15px rgba(27,107,58,0.3);
+}
+
+/* Leaderboard submit */
+.quiz-dz .lb-submit {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+  color: #fff;
+}
+
+.quiz-dz .lb-input:focus {
+  border-color: var(--gosto-green);
+}
+
+.quiz-dz .lb-entry.me {
+  background: rgba(27, 107, 58, 0.15);
+  border-color: rgba(27, 107, 58, 0.3);
+}
+
+/* Modal */
+.quiz-dz .modal-btn-save {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+.quiz-dz .modal-btn-save:hover {
+  box-shadow: 0 6px 20px rgba(27, 107, 58, 0.3);
+}
+
+/* Saved quiz card */
+.quiz-dz .saved-quiz-badge {
+  color: var(--gosto-green);
+  background: rgba(27, 107, 58, 0.15);
+}
+
+.quiz-dz .saved-quiz-resume {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+/* Levels box */
+.quiz-dz .levels-box {
+  background: rgba(27, 107, 58, 0.08);
+  border: 1px solid rgba(27, 107, 58, 0.15);
+}
+
+/* Review button */
+.quiz-dz .review-btn:hover {
+  background: rgba(27, 107, 58, 0.1);
+  border-color: rgba(27, 107, 58, 0.3);
+}
+
+/* Share button */
+.quiz-dz .share-btn:hover {
+  background: rgba(27, 107, 58, 0.1);
+  color: var(--gosto-green-light);
+}
+
+/* Hub card hover for DZ */
+.quiz-dz .hub-avatar {
+  background: linear-gradient(135deg, var(--gosto-green), var(--gosto-green-light));
+}
+
+.quiz-dz .hub-avatar:hover {
+  box-shadow: 0 4px 16px rgba(27, 107, 58, 0.3);
+}
+
+/* ===== SKIP BUTTON ===== */
+.btn-skip {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.btn-skip:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.22);
+  color: #ccc;
+}
+
+.btn-skip:active { transform: scale(0.98); }
+
+/* DZ theme skip button */
+.quiz-dz .btn-skip:hover {
+  border-color: rgba(27, 107, 58, 0.3);
+  background: rgba(27, 107, 58, 0.05);
+}
+
+/* ===== SKIPPED COUNTER ===== */
+.skipped-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--orange);
+  background: rgba(245,166,35,0.12);
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ===== SKIPPED PASS BADGE ===== */
+.skipped-pass-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(245,166,35,0.15);
+  border: 1px solid rgba(245,166,35,0.3);
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-right: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== QUIZ TOPBAR ===== */
+.quiz-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 8px;
+}
+
+.quiz-home-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.quiz-home-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.quiz-home-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.7);
+}
+
+.quiz-home-btn:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.25);
+  transform: scale(1.03);
+}
+
+.quiz-home-btn:hover .quiz-home-label {
+  color: #fff;
+}
+
+.quiz-topbar-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quiz-topbar-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.3px;
+}
+
+.quiz-topbar-theme {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quiz-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.quiz-avatar-btn {
+  background: var(--gradient-main);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.quiz-avatar-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(123,97,255,0.4);
+}
+
+/* DZ topbar overrides */
+.quiz-dz .quiz-home-btn {
+  background: rgba(27,107,58,0.2);
+  border-color: rgba(27,107,58,0.35);
+}
+
+.quiz-dz .quiz-home-btn:hover {
+  background: rgba(27,107,58,0.4);
+  border-color: rgba(45,139,85,0.5);
+}
+
+.quiz-dz .quiz-avatar-btn {
+  background: linear-gradient(135deg, #1B6B3A, #2D8B55);
+}
+
+.quiz-dz .quiz-avatar-btn:hover {
+  box-shadow: 0 0 12px rgba(27,107,58,0.5);
 }
