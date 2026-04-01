@@ -157,6 +157,7 @@ body {
 .btn-30 { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 .btn-50 { background: linear-gradient(135deg, #f5a623, #e8453c); }
 .btn-100 { background: linear-gradient(135deg, #7b61ff, #e91e8f); }
+.btn-200 { background: linear-gradient(135deg, #e91e8f, #ff4500); }
 
 .btn-sub { font-size: 12px; font-weight: 400; opacity: 0.85; margin-top: 4px; }
 

@@ -520,13 +520,12 @@ export default function App() {
           <p className="home-subtitle">{quiz.description}</p>
           <p className="home-label">Combien de questions ?</p>
           {quiz.questionCounts.map((n, i) => {
-            const cls = i === 0 ? "btn-30" : i === 1 ? "btn-50" : "btn-100";
-            const emojis = ["⚡", "🔥", "🏆"];
-            const times = ["~15 min", "~25 min", "~45 min"];
+            const cls = ["btn-30", "btn-50", "btn-100", "btn-200"][i] || "btn-100";
+            const labels = ["Facile", "Pro", "Expert", "Ultra"];
+            const emojis = ["⚡", "🔥", "🏆", "💎"];
             return (
               <button key={n} className={`btn ${cls} animate-in stagger-${i + 1}`} onClick={() => startQuiz(quiz.id, n)}>
-                {n} questions {emojis[i]}
-                <div className="btn-sub">{times[i]}</div>
+                {labels[i]} — {n} questions {emojis[i]}
               </button>
             );
           })}
